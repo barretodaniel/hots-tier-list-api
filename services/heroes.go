@@ -29,7 +29,8 @@ func (hs *HeroService) GetHeroes() (*[]Hero, error) {
 	getHeroesStmt, err := hs.db.Prepare(`SELECT 
 		h.id, h.name, h.portrait, h.tier, h.attack_type, r.name
 		FROM heroes h 
-		INNER JOIN roles r on h.role_id = r.id`)
+		INNER JOIN roles r on h.role_id = r.id
+		ORDER BY h.tier, r.id`)
 	if err != nil {
 		return nil, err
 	}
