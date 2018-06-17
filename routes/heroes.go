@@ -16,7 +16,7 @@ var hs *services.HeroService
 func HeroesRouter(r *mux.Router, db *sql.DB) {
 	hs = services.GetHeroService(db)
 	s := r.PathPrefix("/heroes").Subrouter()
-	s.HandleFunc("/", heroesHandler)
+	s.HandleFunc("/", heroesHandler).Methods("GET")
 }
 
 func heroesHandler(w http.ResponseWriter, r *http.Request) {

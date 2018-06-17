@@ -16,7 +16,7 @@ var rs *services.RoleService
 func RolesRouter(r *mux.Router, db *sql.DB) {
 	rs = services.GetRoleService(db)
 	s := r.PathPrefix("/roles").Subrouter()
-	s.HandleFunc("/", rolesHandler)
+	s.HandleFunc("/", rolesHandler).Methods("GET")
 }
 
 func rolesHandler(w http.ResponseWriter, r *http.Request) {
