@@ -8,6 +8,7 @@ import (
 	"hots-tier-list/routes"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	// required for db access in routes
 	_ "github.com/lib/pq"
 )
@@ -37,5 +38,6 @@ func main() {
 	routes.RolesRouter(r, db)
 
 	fmt.Println("Serving on port 3000")
-	http.ListenAndServe(":3000", r)
+	handler := cors.Default().Handler(r)
+	http.ListenAndServe(":3000", handler)
 }
