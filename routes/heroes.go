@@ -1,27 +1,23 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
-	"hots-tier-list/services"
+	"github.com/barretodaniel/hots-tier-list-api/models"
 
 	"github.com/gorilla/mux"
 )
 
-var hs *services.HeroService
-
 // HeroesRouter creates a subrouter for the /heroes endpoint
-func HeroesRouter(r *mux.Router, db *sql.DB) {
-	hs = services.GetHeroService(db)
+func HeroesRouter(r *mux.Router) {
 	s := r.PathPrefix("/heroes").Subrouter()
 	s.HandleFunc("/", heroesHandler).Methods("GET")
 }
 
 func heroesHandler(w http.ResponseWriter, r *http.Request) {
 
-	heroes, err := hs.GetHeroes()
+	heroes, err := models.GetHeroes()
 	res, err := json.Marshal(heroes)
 
 	if err != nil {

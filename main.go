@@ -1,12 +1,11 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 
-	"hots-tier-list/routes"
-
+	"github.com/barretodaniel/hots-tier-list-api/db"
+	"github.com/barretodaniel/hots-tier-list-api/routes"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	// required for db access in routes
@@ -25,17 +24,14 @@ func check(err error) {
 }
 
 func main() {
-	connStr := "dbname=hots sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
-	check(err)
 
-	defer db.Close()
+	defer db.Get().Close()
 
 	var h http.Handler = http.HandlerFunc(pageNotFound)
 	r := mux.NewRouter()
 	r.NotFoundHandler = h
-	routes.HeroesRouter(r, db)
-	routes.RolesRouter(r, db)
+	routes.HeroesRouter(r)
+	routes.RolesRouter(r)
 
 	fmt.Println("Serving on port 3000")
 	handler := cors.Default().Handler(r)

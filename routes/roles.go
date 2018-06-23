@@ -1,27 +1,23 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
-	"hots-tier-list/services"
+	"github.com/barretodaniel/hots-tier-list-api/models"
 
 	"github.com/gorilla/mux"
 )
 
-var rs *services.RoleService
-
 // RolesRouter creates a subrouter for the /roles path
-func RolesRouter(r *mux.Router, db *sql.DB) {
-	rs = services.GetRoleService(db)
+func RolesRouter(r *mux.Router) {
 	s := r.PathPrefix("/roles").Subrouter()
 	s.HandleFunc("/", rolesHandler).Methods("GET")
 }
 
 func rolesHandler(w http.ResponseWriter, r *http.Request) {
 
-	roles, err := rs.GetRoles()
+	roles, err := models.GetRoles()
 	res, err := json.Marshal(roles)
 
 	if err != nil {

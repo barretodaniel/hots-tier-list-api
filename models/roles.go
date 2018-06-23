@@ -1,13 +1,8 @@
-package services
+package models
 
 import (
-	"database/sql"
+	"github.com/barretodaniel/hots-tier-list-api/db"
 )
-
-// RoleService provides a service to retrieve roles
-type RoleService struct {
-	db *sql.DB
-}
 
 // Role represents the Hero's Role
 type Role struct {
@@ -15,14 +10,9 @@ type Role struct {
 	Name string `json:"name"`
 }
 
-// GetRoleService instantiates and returns a new RoleService
-func GetRoleService(db *sql.DB) *RoleService {
-	return &RoleService{db: db}
-}
-
 // GetRoles returns all the roles
-func (rs *RoleService) GetRoles() (*[]Role, error) {
-	getRolesStmt, err := rs.db.Prepare(`SELECT * FROM roles`)
+func GetRoles() (*[]Role, error) {
+	getRolesStmt, err := db.Get().Prepare(`SELECT * FROM roles`)
 
 	if err != nil {
 		return nil, err
